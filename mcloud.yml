@@ -1,0 +1,157 @@
+---
+- name: MSO Plabook
+  hosts: mso_host
+  connection: local
+  gather_facts: False
+      
+  tasks:
+    # - name: Add a new schema
+    #   mso_schema:
+    #     host: "{{ inventory_hostname }}"
+    #     validate_certs: False
+    #     username: "{{ username }}"
+    #     password: "{{ password }}"
+    #     schema: ANS_SCHEMA
+    #     state: present
+    #     templates:
+    #     - name: ANS_TEMP
+    #       displayName: ANS_TEMP
+    #       tenantId: MCLOUD
+
+    # Create a schema ANS_SCHEMA
+    - name: Add a new template to a schema
+      mso_schema_template:
+        host: "{{ inventory_hostname }}"
+        validate_certs: False
+        username: "{{ username }}"
+        password: "{{ password }}"
+        tenant: MCLOUD
+        schema: ANS_SCHEMA
+        template: ANS_TEMP
+        state: present
+    # Add AWS Site to Schema
+    - name: Add a new site to a schema
+      mso_schema_site:
+        host: "{{ inventory_hostname }}"
+        validate_certs: False
+        username: "{{ username }}"
+        password: "{{ password }}"
+        schema: ANS_SCHEMA
+        site: ACI-AWS-01
+        template: ANS_TEMP
+        state: present
+    # Add AZURE Site to Schema
+    - name: Add a new site to a schema
+      mso_schema_site:
+        host: "{{ inventory_hostname }}"
+        validate_certs: False
+        username: "{{ username }}"
+        password: "{{ password }}"
+        schema: ANS_SCHEMA
+        site: ACI-AZURE-01
+        template: ANS_TEMP
+        state: present
+    # Add vrf ANS_VRF
+    - name: Add a new VRF
+      mso_schema_template_vrf:
+        host: "{{ inventory_hostname }}"
+        validate_certs: False
+        username: "{{ username }}"
+        password: "{{ password }}"
+        schema: ANS_SCHEMA
+        template: ANS_TEMP
+        vrf: ANS_VRF
+        state: present
+    
+    # Deploy schema and template
+    - name: Deploy a schema template
+      mso_schema_template:
+        host: "{{ inventory_hostname }}"
+        validate_certs: False
+        username: "{{ username }}"
+        password: "{{ password }}"
+        schema: ANS_SCHEMA
+        template: ANS_TEMP
+        tenant: MCLOUD
+        state: present
+
+    # - name: Add a new site VRF region
+    #   mso_schema_site_vrf_region:
+    #     host: "{{ inventory_hostname }}"
+    #     validate_certs: False
+    #     username: "{{ username }}"
+    #     password: "{{ password }}"
+    #     schema: ANS_SCHEMA
+    #     site: ACI-AWS-01
+    #     template: ANS_TEMP
+    #     vrf: ANS_VRF
+    #     region: us-east-1
+    #     state: present
+
+    # - name: Add a new site VRF region CIDR
+    #   mso_schema_template_vrf_region_cidr:
+    #     host: "{{ inventory_hostname }}"
+    #     validate_certs: False
+    #     username: "{{ username }}"
+    #     password: "{{ password }}"
+    #     schema: ANS_SCHEMA
+    #     site: ACI-AWS-01
+    #     template: ANS_TEMP
+    #     vrf: ANS_VRF
+    #     region: us-east-1
+    #     cidr: 172.40.0.0/16
+    #     state: present
+
+    - name: Add a new site VRF region CIDR subnet
+      mso_schema_site_vrf_region_cidr_subnet:
+        host: "{{ inventory_hostname }}"
+        validate_certs: False
+        username: "{{ username }}"
+        password: "{{ password }}"
+        schema: ANS_SCHEMA
+        site: ACI-AWS-01
+        template: ANS_TEMP
+        vrf: ANS_VRF
+        region: us-east-1
+        cidr: 172.40.0.0/16
+        subnet: 172.40.1.1/24
+        zone: us-east-1a
+        state: present
+
+    # Add ANP  name ANS_APP
+    # - name: Add a new ANP
+    #   mso_schema_template_anp:
+    #     host: "{{ inventory_hostname }}"
+    #     validate_certs: False
+    #     username: "{{ username }}"
+    #     password: "{{ password }}"
+    #     schema: ANS_SCHEMA
+    #     template: ANS_TEMP
+    #     anp: ANS_APP
+    #     state: present
+
+    # - name: Add a new EPG
+    #   mso_schema_template_anp_epg:
+    #     host: "{{ inventory_hostname }}"
+    #     validate_certs: False
+    #     username: "{{ username }}"
+    #     password: "{{ password }}"
+    #     schema: ANS_SCHEMA
+    #     template: ANS_TEMP
+    #     anp: ANS_APP
+    #     epg: ANS_WEB
+    #     state: present
+
+   
+
+  # create APN ans_app
+  # create ans_vrf
+  # edit ans_vrf at aws site
+    # region: us-east-1
+    # 172.40.0.0/16
+  # edit ans_vrf at azure site
+    # region: australiaeast
+    # 10.40.0.0/16
+    
+
+

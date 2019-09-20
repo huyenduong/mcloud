@@ -1,0 +1,15 @@
+---
+- name: MSO Plabook
+  hosts: mso_host
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Query all schemas
+      mso_schema:
+        host: "{{ inventory_hostname }}"
+        validate_certs: False
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: query
+      delegate_to: localhost
+      register: query_result
